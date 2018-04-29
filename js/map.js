@@ -3,7 +3,7 @@
  */
 var map = L.map('map', {
   renderer: L.svg()
-}).setView([47.6062, -122.3321], 11);
+}).setView([47.6797, -122.3257], 13);
 
 L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -13,6 +13,9 @@ L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}
 
 
 var colour = '#FF0000';
+var jcolour = '#0000FF';
+var pcolour = '#00FF00';
+
 var rank_opacity = { 
   1: '0.0',
   2: '0.2',
@@ -23,14 +26,28 @@ var rank_opacity = {
 
 
 function featureColour (feature) {
-  var rank = feature.properties.FINAL_RANK;
   return {
     color: colour,
     fill: colour,
-    fillOpacity: rank_opacity[rank]
+    fillOpacity: 0.2 
   };
 }
 
+function jobColour (feature) {
+  return {
+    color: jcolour,
+    fill: jcolour,
+    fillOpacity: 0.2 
+  };
+}
+
+function popColour (feature) {
+  return {
+    color: pcolour,
+    fill: pcolour,
+    fillOpacity: 0.2 
+  };
+}
 
 /*
  * setup and JSON
@@ -42,18 +59,44 @@ function setup (geoJ, paneName) {
   }).addTo(map);
 }
 
-$.getJSON('1996final.geojson', function (data) {
-  var geoJson1996 = [data];
-  setup(geoJson1996);
+function jsetup (geoJ, paneName) {
+  L.geoJson(geoJ, {
+    pane: paneName,
+    style: jobColour
+  }).addTo(map);
+}
+
+function psetup (geoJ, paneName) {
+  L.geoJson(geoJ, {
+    pane: paneName,
+    style: popColour
+  }).addTo(map);
+}
+
+$.getJSON('JSON/West.geojson', function (data) {
+  var a = [data];
+  setup(a);
 });
 
-var pane2011 = map.createPane('pane2011');
-$.getJSON('2011final.geojson', function (data) {
-  var geoJson2011 = [data];
-  // Add features to the map
-  setup(geoJson2011, 'pane2011');
+$.getJSON('JSON/South.geojson', function (data) {
+  var a = [data];
+  setup(a);
 });
 
+$.getJSON('JSON/East.geojson', function (data) {
+  var a = [data];
+  setup(a);
+});
+
+$.getJSON('JSON/JobDensity.geojson', function (data) {
+  var a = [data];
+  jsetup(a);
+});
+
+$.getJSON('JSON/PopDensity.geojson', function (data) {
+  var a = [data];
+  psetup(a);
+});
 
 /*
  * legend
@@ -62,23 +105,26 @@ var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
   var div = L.DomUtil.create('div', 'info legend'),
-      grades = [1,2,3,4,5],
+      grades = [1,2,3],
       labels = [];
 
   for (var i = 0; i < grades.length; i++) {
     if (grades[i] === 1) {
       div.innerHTML +=
-        '<i style="background:' + colour + '; opacity:' + rank_opacity[grades[i]] + '"></i> ' +
-        'low impact' + (grades[i] ? '<br>' : ' ');
-    } else if (grades[i] === 5) {
+        '<i style="background:' + colour + '"></i> ' +
+        'walkability' + (grades[i] ? '<br>' : ' ');
+    } else if (grades[i] === 2) {
       div.innerHTML +=
-        '<i style="background:' + colour + '; opacity:' + rank_opacity[grades[i]] + '"></i> ' +
-        'high impact' + (grades[i] ? '<br>' : ' ');
-    } else {
+        '<i style="background:' + jcolour + '"></i> ' +
+        'high job density' + (grades[i] ? '<br>' : ' ');
+    }
+    /*
+    else {
       div.innerHTML +=
         '<i style="background:' + colour + '; opacity:' + rank_opacity[grades[i]] + '"></i> ' +
         '.' + (grades[i] ? '<br>' : ' ');
     }
+    */
   }
   return div;
 };
@@ -129,6 +175,7 @@ function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
 
+/*
 var hover = L.control();
 
 hover.onAdd = function (map) {
@@ -138,12 +185,10 @@ hover.onAdd = function (map) {
 };
 
 // method that we will use to update the control based on feature properties passed
-/*
 hover.update = function (props) {
     this._div.innerHTML = '<h5>You are currently looking at:</h5>' +  (props ?
         '<b>' + props.PlaceName : 'Nothing! Hover over a municipality');
 };
-*/
 
 hover.addTo(map);
 
@@ -157,3 +202,4 @@ $.getJSON('boundaries.geojson', function (data) {
     pane: boundaries
   }).addTo(map);
 });
+*/
