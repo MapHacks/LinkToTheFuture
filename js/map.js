@@ -1,66 +1,45 @@
+/*
+ * basemap and colors
+ */
 var map = L.map('map', {
   renderer: L.svg()
-}).setView([43.439059, -80.419618], 11);
+}).setView([47.6062, -122.3321], 11);
 
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    id: 'sostrows.7faa2b2a',
-    accessToken: 'pk.eyJ1Ijoic29zdHJvd3MiLCJhIjoiYzQzZmM5N2E4MmZiMDFjMWU1ZmE3N2M0M2E2NTllOWUifQ.14jVMAgcp0EglUIjzdyA8w'
-}).addTo(map);
+L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+      subdomains: 'abcd',
+      maxZoom: 19
+}).addTo(map); 
 
-var colours = { 
-  1: '#00FF00',
-  2: '#55FF00',
-  3: '#88FF00',
-  4: '#BBFF00',
-  5: '#FFFF00',
-  6: '#FFDD00', 
-  7: '#FFCC00',
-  8: '#FF8800',
-  9: '#FF4400',
-  10: '#FF0000'};
 
+var colour = '#FF0000';
+var rank_opacity = { 
+  1: '0.0',
+  2: '0.2',
+  3: '0.4',
+  4: '0.6',
+  5: '0.8',
+};
 
 
 function featureColour (feature) {
   var rank = feature.properties.FINAL_RANK;
   return {
-    color: colours[rank],
-    fill: colours[rank],
-    fillOpacity: 1.0
+    color: colour,
+    fill: colour,
+    fillOpacity: rank_opacity[rank]
   };
 }
 
 
+/*
+ * setup and JSON
+ */
 function setup (geoJ, paneName) {
   L.geoJson(geoJ, {
     pane: paneName,
     style: featureColour
   }).addTo(map);
-
-  var overlayPane = map.getPanes().overlayPane;
-
-  function clip() {
-    var nw = map.containerPointToLayerPoint([0, 0]),
-        se = map.containerPointToLayerPoint(map.getSize()),
-        clipX = nw.x + (se.x - nw.x) * range.value;
-
-    overlayPane.style.clip = 'rect(' + [nw.y, clipX, se.y, nw.x].join('px,') + 'px)';
-  }
-
-  var range = document.getElementById('range');
-  range['oninput' in range ? 'oninput' : 'onchange'] = clip;
-  map.on('move', clip);
-
-  //schools
-  L.marker([43.47221825, -80.54241289]).bindPopup('University of Waterloo').addTo(map);
-  L.marker([43.473664, -80.528207]).bindPopup('Wilfrid Laurier University').addTo(map);
-  L.marker([43.478916, -80.517904]).bindPopup('Conestoga College - Waterloo Campus').addTo(map);
-  L.marker([43.3906678, -80.4027819]).bindPopup('Conestoga College - Main Campus').addTo(map);
-  L.marker([43.3582922, -80.3167776]).bindPopup('University of Waterloo School of Architecture').addTo(map);
-  L.marker([43.3868299, -80.3982499]).bindPopup('Conestoga College - Cambridge Campus').addTo(map);
-  L.marker([43.4528117, -80.4990819]).bindPopup('University of Waterloo School of Pharmacy').addTo(map);
-  clip();
 }
 
 $.getJSON('1996final.geojson', function (data) {
@@ -76,32 +55,33 @@ $.getJSON('2011final.geojson', function (data) {
 });
 
 
-
+/*
+ * legend
+ */
 var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
+  var div = L.DomUtil.create('div', 'info legend'),
+      grades = [1,2,3,4,5],
+      labels = [];
 
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [1,2,3,4,5,6,7,8,9,10],
-        labels = [];
-
-    for (var i = 0; i < grades.length; i++) {
-        if (grades[i] === 1) {
-          div.innerHTML +=
-          '<i style="background:' + colours[grades[i]] + '"></i> ' +
-            grades[i] + ' - low student impact' + (grades[i] ? '<br>' : ' ');
-        } else if (grades[i] === 10) {
-          div.innerHTML +=
-            '<i style="background:' + colours[grades[i]] + '"></i> ' +
-            grades[i] + ' - high student impact' + (grades[i] ? '<br>' : ' ');
-          } else {
-          div.innerHTML +=
-            '<i style="background:' + colours[grades[i]] + '"></i> ' +
-            grades[i] + (grades[i] ? '<br>' : ' ');
-          }
-        }
-        return div;
-      };
+  for (var i = 0; i < grades.length; i++) {
+    if (grades[i] === 1) {
+      div.innerHTML +=
+        '<i style="background:' + colour + '; opacity:' + rank_opacity[grades[i]] + '"></i> ' +
+        'low impact' + (grades[i] ? '<br>' : ' ');
+    } else if (grades[i] === 5) {
+      div.innerHTML +=
+        '<i style="background:' + colour + '; opacity:' + rank_opacity[grades[i]] + '"></i> ' +
+        'high impact' + (grades[i] ? '<br>' : ' ');
+    } else {
+      div.innerHTML +=
+        '<i style="background:' + colour + '; opacity:' + rank_opacity[grades[i]] + '"></i> ' +
+        '.' + (grades[i] ? '<br>' : ' ');
+    }
+  }
+  return div;
+};
 
 legend.addTo(map);
 
@@ -115,6 +95,9 @@ function style(feature) {
     };
 }
 
+/*
+ * behavior
+ */
 function highlightFeature(e) {
     var layer = e.target;
 
@@ -155,10 +138,12 @@ hover.onAdd = function (map) {
 };
 
 // method that we will use to update the control based on feature properties passed
+/*
 hover.update = function (props) {
     this._div.innerHTML = '<h5>You are currently looking at:</h5>' +  (props ?
         '<b>' + props.PlaceName : 'Nothing! Hover over a municipality');
 };
+*/
 
 hover.addTo(map);
 

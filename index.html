@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Student Impact on Sustainable Development | Savannah Ostrowski</title>
+    <title>Link to the Future</title>
     <meta name="description" content="Savannah Ostrowski is a Canadian web developer and student">
     <meta name=viewport content="width=device-width, initial-scale=1">
     <!-- Google fonts -->
@@ -22,72 +22,42 @@
     <script src="js/typed.js"></script>
 </head>
 <body>
-    <div id="banner" class="banner container">
-        <div class="header">
-            <h1>So what about</h1>
-            <span class="accent typeout"></span>
-        </div>
-        <span class="scrolldown">Scroll down to check out how Waterloo region has changed!</span>
-    </div>
-    <section id="about" class="about">
-        <div class="aboutbox">
-            <h2>About the Project</h2>
-            <p>Welcome! This is a web app designed as the final project for
-              GEOG 481 - Geographic Information Systems Project at the University
-              of Waterloo.</p>
-            <h3>Who?</h3>
-            <p> The analysis for the project was completed by Tasha-Leigh Gauthier, Luke Johnson, Savannah
-              Ostrowski and Dana Thompson. This web app was designed and built by <a href="http://www.savannahostrowski.com">yours truly!</a></p>
-            <h3>What?</h3>
-            <p>A web app about quantifying the effects of post-secondary students
-              on sustainable development using a temporal analysis of Waterloo Region,
-              Ontario, Canada.</p>
-            <h3>When?</h3>
-            <p>Sustainable development was considered over 1996, 2001, 2006 and 2011 census years but this study was conducted
-              in Spring 2015.</p>
-            <h3>Why?</h3>
-            <p>Waterloo is growing! It also has a bunch of universities and colleges! It's important
-              to consider what types of initiatives will be needed in the future to continue
-              growing!</p>
-            <h3>How?</h3>
-            <p> Using both spatial and non-spatial data, the analysis considers the
-              three pillars of sustainable development - environment, economy and society. Data
-              sources include the Canadian census, and the Municipality of Waterloo.</p>          
-        </div>
-    </section>
+    <h1>Link to the Future</h1>
     <!-- Map Section -->
     <section class="map container">
-      <h2>What happened in Waterloo from 1996 to 2011?</h2>
-      <h4>On the left are student impacts from 1996 while on the right are student impacts from 2011. </h4>
+      <h2>A heatmap for Seattle Link stations.</h2>
       <div id="nav-ui" class="menu-ui"></nav>
         <div id ="map">
         </div>
-      <input id="range" class="range" type="range" min="0" max="1.0" step="any"/>
+    </section>
+    <section id="about" class="about">
+        <div class="aboutbox">
+            <h2>About</h2>
+            <h3>Who?</h3>
+            <p> The project was made by Preston, Preston, Alex, and Quan
+                for <b>MapHacks@UW 2018.</b></p>
+            <h3>What?</h3>
+            <p>A web app visualizing the ideal locations for <b>new Link Light Rail
+               stations</b> in Seattle.</p>
+            <h3>When?</h3>
+            <p>This analysis was conducted in Spring 2018.</p>
+            <h3>Why?</h3>
+            <p>Seattle is in gridlock! Surface transit has become crippling for cars, buses, 
+               and bicycles alike. We need a grade-separated Link to the future!</p>
+            <h3>How?</h3>
+            <p>A location allocation analysis for stations based on job and population
+               density, as well as existing Link and bus facilities. No attempt was
+               made to analyze routing or feasibility.</p>          
+        </div>
     </section>
     <section class="findings">
-      <div class="findingsbox">
-          <h2>A Short Summary of Our Findings</h2>
-          <p>We found that students have been opting to live near university and college campuses! Their impact over time as been becoming more centralized
-          around the University of Waterloo and Wilfrid Laurier University campuses. However, their impact has also been becoming more and more expansive! Areas of low impact are moving outward towards more rural and less populous parts of the region.
-          <br> 
-          However, student population growth in the region has been forecasted to stagnate in the future by both city planners and economists. As a result, this study proves to be relevant to stakeholders but requires more information about environmental impact to gain more comprehensive insight!</p>
+      <div class="aboutbox">
+          <h2>Results</h2>
       </div>
     </section>
     <section id="footer" class="footer container">
-          <p class="copyright">&copy;2015 Savannah Ostrowski Design</p>
+          <p class="copyright">&copy;2018 Preston Sahabu</p>
     </section>
 </body>
-<script text="text/javascript">
-$(document).ready(function() {
-    $(".typeout").typed({
-        strings: ["sustainable development?^1000", "the environment?^1000", "the economy?^1000", "society?^1000", "sustainable development?^1000"],
-        typeSpeed: 50,
-        cursorChar: "",
-    });
-    $('.scrolldown').delay(16500).fadeIn("slow", function () {
-      //faded in
-    });
-  });
-</script>
 <script src="js/map.js"></script>
 </html>

@@ -21,23 +21,23 @@ h1 {
     font-size: 7.5rem;
     font-weight: 200;
     margin-top: 20px;
-    font-family: 'Raleway', sans-serif;
-    color: white;
+    font-family: 'Helvetica', sans-serif;
+    color: black;
 }
 
 h2 {
     font-size: 3rem;
     font-weight:600;
     margin-bottom: 20px;
-    font-family: 'Raleway', sans-serif;
-    color:#2c8e0f;
+    font-family: 'Helvetica', sans-serif;
+    color:#ff0000;
 }
 h3 {
   font-size: 2rem;
   font-weight: 200;
   margin-bottom: 20px;
-  font-family: 'Raleway', sans-serif;
-  color:#2c8e0f;
+  font-family: 'Helvetica', sans-serif;
+  color:#ff0000;
 
 }
 
@@ -50,7 +50,7 @@ p {
     line-height: 1.4;
     font-size: 1rem;
     color: black;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Calibri', sans-serif;
     font-weight: 300;
 }
 
